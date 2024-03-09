@@ -9,8 +9,8 @@ function Get-LatestTag {
     param (
         [string]$UserRepo
     )
-    $target = "https://api.github.com/repos/$UserRepo/releases"
-    $tag = (Invoke-WebRequest $target | ConvertFrom-Json)[0].tag_name
+    $target = "https://api.github.com/repos/$UserRepo/releases/latest"
+    $tag = (Invoke-WebRequest $target | ConvertFrom-Json).tag_name
     Write-Output $tag
 }
 
@@ -31,8 +31,8 @@ $cncddrawTarget = 'FunkyFr3sh/cnc-ddraw'
 
 #Switch this back after 0.9.7 releases
 #Doesn't handle prerelease versions
-#$kgLatest = Get-LatestTag $kgTarget
-$kgLatest = 'v0.9.6'
+$kgLatest = Get-LatestTag $kgTarget
+#$kgLatest = 'v0.9.6'
 
 # Substring strips the leading v which is not used in the filename
 $kgFilename = "KohanGold-$($kgLatest.Substring(1)).tgx"
@@ -64,6 +64,7 @@ if ( $cwd -ceq 'Kohan Ahrimans Gift') {
         Write-Output "Unpacking OpenSpy Client $tag"
         Expand-Archive -Force $openspyFilename
         Move-Item -Force -Destination dinput.dll "openspy/openspy.x86.dll"
+        Write-Output "Cleaning up OpenSpy files"
         Remove-Item -Recurse "openspy/"
         Remove-Item $openspyFilename
 
@@ -78,6 +79,7 @@ if ( $cwd -ceq 'Kohan Ahrimans Gift') {
         foreach ($item in (Get-Childitem "cnc-ddraw")) {
             Move-Item -Force -Destination './' $item.fullname
         }
+        Write-Output "Cleaning up cnc-ddraw files"
         Remove-Item -Recurse "cnc-ddraw"
         Remove-Item $cncddrawFilename
         # Set cnc-ddraw default options
