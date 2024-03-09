@@ -59,7 +59,7 @@ if ( $cwd -ceq 'Kohan Ahrimans Gift') {
     #Unzip OpenSpy Client
     Write-Output "Unpacking OpenSpy Client $tag"
     Expand-Archive -Force $openspyFilename
-    Move-Item -Force -Destination dinput.dll "openspy/openspy.x64.dll"
+    Move-Item -Force -Destination dinput.dll "openspy/openspy.x86.dll"
     Remove-Item -Recurse "openspy/"
     Remove-Item $openspyFilename
 
@@ -72,7 +72,6 @@ if ( $cwd -ceq 'Kohan Ahrimans Gift') {
     Write-Output "Unpacking cnc-ddraw $tag"
     Expand-Archive -Force $cncddrawFilename
     foreach ($item in (Get-Childitem "cnc-ddraw")) {
-		Write-Output($item)
         Move-Item -Force -Destination './' $item.fullname
     }
     Remove-Item -Recurse "cnc-ddraw"
