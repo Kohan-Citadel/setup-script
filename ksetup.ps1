@@ -51,7 +51,7 @@ if ( $cwd -ceq 'Kohan Ahrimans Gift') {
     Write-Output "Downloading KohanGold $latestkg"
     Invoke-WebRequest -OutFile $kgFilename $kgtarget
 
-    #Download OpenSpy Client
+    # Download OpenSpy Client
     $tag = Get-LatestTag $openspyTarget
     $target = "https://github.com/$openspyTarget/releases/download/$tag/$openspyFilename"
     Write-Output "Downloading OpenSpy Client $tag from $target"
@@ -63,16 +63,17 @@ if ( $cwd -ceq 'Kohan Ahrimans Gift') {
     Remove-Item -Recurse "openspy/"
     Remove-Item $openspyFilename
 
-    #Download cnc-ddraw
+    # Download cnc-ddraw
     $tag = Get-LatestTag $cncddrawTarget
     $target = "https://github.com/$cncddrawTarget/releases/download/$tag/$cncddrawFilename"
     Write-Output "Downloading cnc-ddraw $tag from $target"
     Invoke-WebRequest -OutFile $cncddrawFilename $target
-    #Unzip cnc-ddraw
+    # Unzip cnc-ddraw
     Write-Output "Unpacking cnc-ddraw $tag"
     Expand-Archive -Force $cncddrawFilename
     foreach ($item in (Get-Childitem "cnc-ddraw")) {
-        Move-Item -Force -Destination './' $item
+		Write-Output($item)
+        Move-Item -Force -Destination './' $item.fullname
     }
     Remove-Item -Recurse "cnc-ddraw"
     Remove-Item $cncddrawFilename
