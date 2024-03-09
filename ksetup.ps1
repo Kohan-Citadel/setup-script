@@ -49,38 +49,50 @@ if ( $cwd -ceq 'Kohan Ahrimans Gift') {
             Remove-Item -Force $target
         }
     }
-    # Download Kohan Gold
-	$target = "https://github.com/$kgTarget/releases/download/$kgLatest/$kgFilename"
-    Write-Output "Downloading KohanGold $kgLatest from $target"
-    Invoke-WebRequest -OutFile $kgFilename $target
+    try {
+        # Download Kohan Gold
+        $target = "https://github.com/$kgTarget/releases/download/$kgLatest/$kgFilename"
+        Write-Output "Downloading KohanGold $kgLatest from $target"
+        Invoke-WebRequest -OutFile $kgFilename $target
 
-    # Download OpenSpy Client
-    $tag = Get-LatestTag $openspyTarget
-    $target = "https://github.com/$openspyTarget/releases/download/$tag/$openspyFilename"
-    Write-Output "Downloading OpenSpy Client $tag from $target"
-    Invoke-WebRequest -OutFile $openspyFilename $target
-    # Unzip OpenSpy Client
-    Write-Output "Unpacking OpenSpy Client $tag"
-    Expand-Archive -Force $openspyFilename
-    Move-Item -Force -Destination dinput.dll "openspy/openspy.x86.dll"
-    Remove-Item -Recurse "openspy/"
-    Remove-Item $openspyFilename
+        # Download OpenSpy Client
+        $tag = Get-LatestTag $openspyTarget
+        $target = "https://github.com/$openspyTarget/releases/download/$tag/$openspyFilename"
+        Write-Output "Downloading OpenSpy Client $tag from $target"
+        Invoke-WebRequest -OutFile $openspyFilename $target
+        # Unzip OpenSpy Client
+        Write-Output "Unpacking OpenSpy Client $tag"
+        Expand-Archive -Force $openspyFilename
+        Move-Item -Force -Destination dinput.dll "openspy/openspy.x86.dll"
+        Remove-Item -Recurse "openspy/"
+        Remove-Item $openspyFilename
 
-    # Download cnc-ddraw
-    $tag = Get-LatestTag $cncddrawTarget
-    $target = "https://github.com/$cncddrawTarget/releases/download/$tag/$cncddrawFilename"
-    Write-Output "Downloading cnc-ddraw $tag from $target"
-    Invoke-WebRequest -OutFile $cncddrawFilename $target
-    # Unzip cnc-ddraw
-    Write-Output "Unpacking cnc-ddraw $tag"
-    Expand-Archive -Force $cncddrawFilename
-    foreach ($item in (Get-Childitem "cnc-ddraw")) {
-        Move-Item -Force -Destination './' $item.fullname
+        # Download cnc-ddraw
+        $tag = Get-LatestTag $cncddrawTarget
+        $target = "https://github.com/$cncddrawTarget/releases/download/$tag/$cncddrawFilename"
+        Write-Output "Downloading cnc-ddraw $tag from $target"
+        Invoke-WebRequest -OutFile $cncddrawFilename $target
+        # Unzip cnc-ddraw
+        Write-Output "Unpacking cnc-ddraw $tag"
+        Expand-Archive -Force $cncddrawFilename
+        foreach ($item in (Get-Childitem "cnc-ddraw")) {
+            Move-Item -Force -Destination './' $item.fullname
+        }
+        Remove-Item -Recurse "cnc-ddraw"
+        Remove-Item $cncddrawFilename
+        # Set cnc-ddraw default options
+        (get-content './ddraw.ini').Replace('windowed=false','windowed=true').Replace('fullscreen=false','fullscreen=true').Replace('maintas=false','maintas=true') | Set-Content './ddraw.ini'
+        $choice = Read-Host -Prompt "Open cnc-ddraw config tool? [y|N]"
+        if ( $choice -eq "y" ) {
+            & "./cnc-ddraw config.exe"
+        }
     }
-    Remove-Item -Recurse "cnc-ddraw"
-    Remove-Item $cncddrawFilename
-	# Set cnc-ddraw default options
-	(get-content './ddraw.ini').Replace('windowed=false','windowed=true').Replace('fullscreen=false','fullscreen=true').Replace('maintas=false','maintas=true') | Set-Content './ddraw.ini'
+    catch [System.Net.Http.HttpRequestException] {
+        Write-Output "Download failed: $_"
+    }
+    catch {
+        $_
+    }
 	
 } else {
     Write-Output "Please run this from within the install directory for Kohan: Ahriman's Gift"
