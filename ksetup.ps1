@@ -79,6 +79,9 @@ if ( $cwd -ceq 'Kohan Ahrimans Gift') {
     }
     Remove-Item -Recurse "cnc-ddraw"
     Remove-Item $cncddrawFilename
+	# Set cnc-ddraw default options
+	(get-content './ddraw.ini').Replace('windowed=false','windowed=true').Replace('fullscreen=false','fullscreen=true').Replace('maintas=false','maintas=true') | Set-Content './ddraw.ini'
+	
 } else {
     Write-Output "Please run this from within the install directory for Kohan: Ahriman's Gift"
 }
