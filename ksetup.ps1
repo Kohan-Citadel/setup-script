@@ -29,10 +29,7 @@ $kgTarget = 'Kohan-Citadel/kohangold-KG-'
 $openspyTarget = 'anzz1/openspy-client'
 $cncddrawTarget = 'FunkyFr3sh/cnc-ddraw'
 
-#Switch this back after 0.9.7 releases
-#Doesn't handle prerelease versions
 $kgLatest = Get-LatestTag $kgTarget
-#$kgLatest = 'v0.9.6'
 
 # Substring strips the leading v which is not used in the filename
 $kgFilename = "KohanGold-$($kgLatest.Substring(1)).tgx"
@@ -88,9 +85,6 @@ if ( $cwd -ceq 'Kohan Ahrimans Gift') {
         if ( $choice -eq "y" ) {
             & "./cnc-ddraw config.exe"
         }
-    }
-    catch [System.Net.Http.HttpRequestException] {
-        Write-Output "Download failed: $_"
     }
     catch {
         $_
