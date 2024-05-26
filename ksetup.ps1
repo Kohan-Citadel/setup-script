@@ -82,6 +82,7 @@ if ( $cwd -ceq 'Kohan Ahrimans Gift') {
         # Set cnc-ddraw default options
         $kag_section = @"
 ; Kohan: Ahriman's Gift
+[_ag]
 windowed=true
 fullscreen=true
 maintas=true
