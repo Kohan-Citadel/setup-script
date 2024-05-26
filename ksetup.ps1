@@ -1,4 +1,4 @@
-#!pwsh
+#!/usr/bin/env pwsh
 
 ##KSETUP.PS1
 # This is a little PowerShell script to install the required things
@@ -80,7 +80,15 @@ if ( $cwd -ceq 'Kohan Ahrimans Gift') {
         Remove-Item -Recurse "cnc-ddraw"
         Remove-Item $cncddrawFilename
         # Set cnc-ddraw default options
-        (get-content './ddraw.ini').Replace('windowed=false','windowed=true').Replace('fullscreen=false','fullscreen=true').Replace('maintas=false','maintas=true') | Set-Content './ddraw.ini'
+        $kag_section = @"
+; Kohan: Ahriman's Gift
+[_ag]
+windowed=true
+fullscreen=true
+maintas=true
+"@
+        Add-Content './ddraw.ini' $kag_section
+
         $choice = Read-Host -Prompt "Open cnc-ddraw config tool? [y|N]"
         if ( $choice -eq "y" ) {
             & "./cnc-ddraw config.exe"
