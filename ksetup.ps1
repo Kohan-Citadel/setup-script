@@ -26,6 +26,7 @@ $rmtargets = @(
 )
 
 $kgTarget = 'Kohan-Citadel/kohangold-KG-'
+$launcherTarget = 'https://github.com/Kohan-Citadel/kohangold-KG-/releases/download/v0.9.6/KohanLauncher.exe'
 $openspyTarget = 'anzz1/openspy-client'
 $cncddrawTarget = 'FunkyFr3sh/cnc-ddraw'
 
@@ -51,6 +52,12 @@ if ( $cwd -ceq 'Kohan Ahrimans Gift') {
         $target = "https://github.com/$kgTarget/releases/download/$kgLatest/$kgFilename"
         Write-Output "Downloading KohanGold $kgLatest from $target"
         Invoke-WebRequest -OutFile $kgFilename $target
+
+        # Download KohanLauncher.exe
+        if (-Not (Test-Path 'KohanLauncher.exe')) {
+            Write-Output "Downloading KohanLauncher"
+            Invoke-WebRequest -OutFile "KohanLauncher.exe" $launcherTarget
+        }
 
         # Download OpenSpy Client
         $tag = Get-LatestTag $openspyTarget
