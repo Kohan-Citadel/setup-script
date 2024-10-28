@@ -39,7 +39,7 @@ $cncddrawFilename = 'cnc-ddraw.zip'
 
 $cwd = Split-Path -Path (Get-Location) -Leaf
 
-if ( $cwd -ceq 'Kohan Ahrimans Gift') {
+if (Test-Path '_ag.exe') {
     # Remove the files listed in $rmtargets
     foreach ($target in $rmtargets) {
         if (Test-Path $target) {
