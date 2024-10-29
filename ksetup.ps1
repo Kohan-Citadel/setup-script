@@ -39,7 +39,7 @@ $cncddrawFilename = 'cnc-ddraw.zip'
 
 $cwd = Split-Path -Path (Get-Location) -Leaf
 
-if ( $cwd -ceq 'Kohan Ahrimans Gift') {
+if (Test-Path '_ag.exe') {
     # Remove the files listed in $rmtargets
     foreach ($target in $rmtargets) {
         if (Test-Path $target) {
@@ -107,4 +107,5 @@ maintas=true
 	
 } else {
     Write-Output "Please run this from within the install directory for Kohan: Ahriman's Gift"
+	Read-Host -Prompt "Press ENTER to exit"
 }
