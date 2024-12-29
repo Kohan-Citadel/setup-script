@@ -27,7 +27,7 @@ $rmtargets = @(
 
 $kgTarget = 'Kohan-Citadel/kohangold-KG-'
 $launcherTarget = 'https://github.com/Kohan-Citadel/kohangold-KG-/releases/download/v0.9.6/KohanLauncher.exe'
-$openspyTarget = 'anzz1/openspy-client'
+$khaldunNetTarget = 'Kohan-Citadel/khaldun.net-client'
 $cncddrawTarget = 'FunkyFr3sh/cnc-ddraw'
 
 $kgLatest = Get-LatestTag $kgTarget
@@ -60,9 +60,9 @@ if (Test-Path '_ag.exe') {
         }
 
         # Download OpenSpy Client
-        $tag = Get-LatestTag $openspyTarget
-        $target = "https://github.com/$openspyTarget/releases/download/$tag/$openspyFilename"
-        Write-Output "Downloading OpenSpy Client $tag from $target"
+        $tag = Get-LatestTag $khaldunNetTarget
+        $target = "https://github.com/$khaldunNetTarget/releases/download/$tag/$openspyFilename"
+        Write-Output "Downloading khaldun.net client $tag from $target"
         Invoke-WebRequest -OutFile $openspyFilename $target
         # Unzip OpenSpy Client
         Write-Output "Unpacking OpenSpy Client $tag"
