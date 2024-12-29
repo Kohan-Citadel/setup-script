@@ -107,4 +107,5 @@ maintas=true
 	
 } else {
     Write-Output "Please run this from within the install directory for Kohan: Ahriman's Gift"
+	Read-Host -Prompt "Press ENTER to exit"
 }
