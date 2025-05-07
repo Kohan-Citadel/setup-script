@@ -10,7 +10,7 @@ function Get-LatestTag {
         [string]$UserRepo
     )
     $target = "https://api.github.com/repos/$UserRepo/releases/latest"
-    $tag = (Invoke-WebRequest $target | ConvertFrom-Json).tag_name
+    $tag = (Invoke-WebRequest -UseBasicParsing $target | ConvertFrom-Json).tag_name
     Write-Output $tag
 }
 
@@ -34,7 +34,7 @@ $kgLatest = Get-LatestTag $kgTarget
 
 # Substring strips the leading v which is not used in the filename
 $kgFilename = "KohanGold-$($kgLatest.Substring(1)).tgx"
-$openspyFilename = 'openspy.zip'
+$openspyFilename = 'dinput.zip'
 $cncddrawFilename = 'cnc-ddraw.zip'
 
 $cwd = Split-Path -Path (Get-Location) -Leaf
@@ -51,32 +51,31 @@ if (Test-Path '_ag.exe') {
         # Download Kohan Gold
         $target = "https://github.com/$kgTarget/releases/download/$kgLatest/$kgFilename"
         Write-Output "Downloading KohanGold $kgLatest from $target"
-        Invoke-WebRequest -OutFile $kgFilename $target
+        Invoke-WebRequest -UseBasicParsing -OutFile $kgFilename $target
 
         # Download KohanLauncher.exe
         if (-Not (Test-Path 'KohanLauncher.exe')) {
             Write-Output "Downloading KohanLauncher"
-            Invoke-WebRequest -OutFile "KohanLauncher.exe" $launcherTarget
+            Invoke-WebRequest -UseBasicParsing -OutFile "KohanLauncher.exe" $launcherTarget
         }
 
         # Download OpenSpy Client
         $tag = Get-LatestTag $khaldunNetTarget
         $target = "https://github.com/$khaldunNetTarget/releases/download/$tag/$openspyFilename"
         Write-Output "Downloading khaldun.net client $tag from $target"
-        Invoke-WebRequest -OutFile $openspyFilename $target
+        Invoke-WebRequest -UseBasicParsing -OutFile $openspyFilename $target
         # Unzip OpenSpy Client
-        Write-Output "Unpacking OpenSpy Client $tag"
+        Write-Output "Unpacking khaldun.net Client $tag"
         Expand-Archive -Force $openspyFilename
-        Move-Item -Force -Destination dinput.dll "openspy/openspy.x86.dll"
-        Write-Output "Cleaning up OpenSpy files"
-        Remove-Item -Recurse "openspy/"
+        Write-Output "Cleaning up khaldun.net files"
+        Remove-Item -Recurse "dinput/"
         Remove-Item $openspyFilename
 
         # Download cnc-ddraw
         $tag = Get-LatestTag $cncddrawTarget
         $target = "https://github.com/$cncddrawTarget/releases/download/$tag/$cncddrawFilename"
         Write-Output "Downloading cnc-ddraw $tag from $target"
-        Invoke-WebRequest -OutFile $cncddrawFilename $target
+        Invoke-WebRequest -UseBasicParsing -OutFile $cncddrawFilename $target
         # Unzip cnc-ddraw
         Write-Output "Unpacking cnc-ddraw $tag"
         Expand-Archive -Force $cncddrawFilename
