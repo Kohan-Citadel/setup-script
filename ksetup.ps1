@@ -69,6 +69,7 @@ if (Test-Path '_ag.exe') {
         # Unzip OpenSpy Client
         Write-Output "Unpacking khaldun.net Client $tag"
         Expand-Archive -Force $openspyFilename
+        Move-Item -Force -Destination dinput.dll "dinput/dinput.dll"
         Write-Output "Cleaning up khaldun.net files"
         Remove-Item -Recurse "dinput/"
         Remove-Item $openspyFilename
