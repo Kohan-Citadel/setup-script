@@ -49,9 +49,11 @@ if (Test-Path '_ag.exe') {
     }
     try {
         # Download Kohan Gold
-        $target = "https://github.com/$kgTarget/releases/download/$kgLatest/$kgFilename"
-        Write-Output "Downloading KohanGold $kgLatest from $target"
-        Invoke-WebRequest -UseBasicParsing -OutFile $kgFilename $target
+        if (-Not (Test-Path "$kgFilename")) {
+            $target = "https://github.com/$kgTarget/releases/download/$kgLatest/$kgFilename"
+            Write-Output "Downloading KohanGold $kgLatest from $target"
+            Invoke-WebRequest -UseBasicParsing -OutFile $kgFilename $target
+        }
 
         # Download KohanLauncher.exe
         if (-Not (Test-Path 'KohanLauncher.exe')) {
