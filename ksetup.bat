@@ -1,3 +1,9 @@
+@echo off
+Rem Make powershell read this file, skip a number of lines, and execute it.
+Rem This works around .ps1 bad file association as non executables.
+Rem Technique from https://stackoverflow.com/a/65314841
+PowerShell -Command "Get-Content '%~dpnx0' | Select-Object -Skip 6 | Out-String | Invoke-Expression"
+goto :eof
 #!/usr/bin/env pwsh
 
 ##KSETUP.PS1
