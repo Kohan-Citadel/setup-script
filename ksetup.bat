@@ -115,5 +115,6 @@ maintas=true
 	
 } else {
     Write-Output "Please run this from within the install directory for Kohan: Ahriman's Gift"
+	Write-Output "For the Steam version, this should be 'C:\Program Files (x86)\Steam\steamapps\common\Kohan Ahrimans Gift'"
 	Read-Host -Prompt "Press ENTER to exit"
 }
